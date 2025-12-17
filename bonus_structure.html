@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Схема на Бонусите</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      background-color: #f0f2f5;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 15px;
+      box-sizing: border-box;
+    }
+
+    .info-card {
+      background: #ffffff;
+      width: 100%;
+      max-width: 450px;
+      padding: 25px;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+      border: 1px solid #e0e0e0;
+    }
+
+    h2 {
+      text-align: center;
+      color: #1e293b;
+      margin-top: 0;
+      font-size: 22px;
+      margin-bottom: 20px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      font-weight: 600;
+      font-size: 14px;
+      color: #64748b;
+      margin-bottom: 8px;
+      display: block;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    select {
+      width: 100%;
+      padding: 14px;
+      border: 2px solid #e2e8f0;
+      border-radius: 10px;
+      font-size: 18px;
+      color: #334155;
+      background-color: #f8fafc;
+      outline: none;
+      -webkit-appearance: none;
+      cursor: pointer;
+    }
+
+    select:focus {
+      border-color: #4f46e5;
+      background-color: #fff;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: separate; 
+      border-spacing: 0;
+      margin-top: 10px;
+      font-size: 16px;
+    }
+
+    th {
+      background-color: #4f46e5;
+      color: white;
+      padding: 12px;
+      text-align: center;
+      font-size: 14px;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    th:first-child { border-top-left-radius: 10px; text-align: left; padding-left: 15px; }
+    th:last-child { border-top-right-radius: 10px; }
+
+    td {
+      padding: 14px 10px;
+      border-bottom: 1px solid #e2e8f0;
+      color: #334155;
+      text-align: center;
+    }
+
+    td:first-child {
+      text-align: left;
+      padding-left: 15px;
+      font-weight: 600;
+      color: #475569;
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    tr:nth-child(even) {
+      background-color: #f8fafc;
+    }
+
+    .price-col {
+      font-weight: 800;
+      color: #0f172a;
+      font-size: 17px;
+    }
+
+    .range-col {
+      color: #64748b;
+      font-size: 15px;
+    }
+
+    .disclaimer {
+      margin-top: 20px;
+      font-size: 12px;
+      color: #94a3b8;
+      font-style: normal;
+      text-align: center;
+      line-height: 1.4;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="info-card">
+    <h2>Схема на Бонусите</h2>
+
+    <div class="form-group">
+      <label for="contractSelect">Изберете Договор:</label>
+      <select id="contractSelect" onchange="updateTable()">
+        <option value="40">40 часа</option>
+        <option value="30">30 часа</option>
+        <option value="20">20 часа</option>
+        <option value="10">10 часа</option>
+      </select>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Ниво</th>
+          <th>Брой</th>
+          <th>Бонус</th>
+        </tr>
+      </thead>
+      <tbody id="tableBody">
+      </tbody>
+    </table>
+
+    <div class="disclaimer">
+      * Посочените суми са брутни (Gross).<br>
+    </div>
+  </div>
+
+  <script>
+    const data = {
+      40: [
+        { name: "Base", range: "0 - 100", price: "€0.25" },
+        { name: "Mid", range: "100 - 200", price: "€1.00" },
+        { name: "High", range: "200 - 300", price: "€1.50" },
+        { name: "Super", range: "300 +", price: "€3.00" }
+      ],
+      30: [
+        { name: "Base", range: "0 - 75", price: "€0.25" },
+        { name: "Mid", range: "75 - 150", price: "€1.00" },
+        { name: "High", range: "150 - 225", price: "€1.50" },
+        { name: "Super", range: "225 +", price: "€3.00" }
+      ],
+      20: [
+        { name: "Base", range: "0 - 50", price: "€0.25" },
+        { name: "Mid", range: "50 - 100", price: "€1.00" },
+        { name: "High", range: "100 - 150", price: "€1.50" },
+        { name: "Super", range: "150 +", price: "€3.00" }
+      ],
+      10: [
+        { name: "Base", range: "0 - 25", price: "€0.25" },
+        { name: "Mid", range: "25 - 50", price: "€1.00" },
+        { name: "High", range: "50 - 75", price: "€1.50" },
+        { name: "Super", range: "75 +", price: "€3.00" }
+      ]
+    };
+
+    function updateTable() {
+      const contract = document.getElementById('contractSelect').value;
+      const tbody = document.getElementById('tableBody');
+      const contractData = data[contract];
+
+      tbody.innerHTML = '';
+
+      contractData.forEach(row => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${row.name}</td>
+          <td class="range-col">${row.range}</td>
+          <td class="price-col">${row.price}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    updateTable();
+  </script>
+
+</body>
+</html>
