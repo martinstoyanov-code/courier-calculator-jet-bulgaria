@@ -7,9 +7,8 @@
   <style>
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-      background-color: #f0f2f5; /* Light grey background to see the card better */
+      background-color: #f0f2f5;
       margin: 0;
-      /* Flexbox to center the card vertically and horizontally on the phone */
       display: flex;
       align-items: center;
       justify-content: center;
@@ -21,19 +20,25 @@
     .calculator-card {
       background: #ffffff;
       width: 100%;
-      max-width: 380px; /* Optimal width for mobile reading */
+      max-width: 380px;
       padding: 25px;
-      border-radius: 16px; /* Softer corners */
-      box-shadow: 0 10px 25px rgba(0,0,0,0.05);
-      border: 1px solid #e0e0e0;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(255, 92, 0, 0.08); /* subtle orange shadow */
+      border: 2px solid rgba(255, 92, 0, 0.2); /* light orange border */
+      transition: box-shadow 0.3s, border-color 0.3s;
+    }
+
+    .calculator-card:hover {
+      box-shadow: 0 15px 35px rgba(255, 92, 0, 0.15);
+      border-color: rgba(255, 92, 0, 0.3);
     }
 
     h2 {
       text-align: center;
-      color: #1e293b;
+      color: #FF5C00; /* JET Orange */
       margin-top: 0;
       margin-bottom: 20px;
-      font-size: 22px; /* Slightly larger header */
+      font-size: 22px;
     }
 
     .form-group {
@@ -52,49 +57,54 @@
 
     select, input {
       width: 100%;
-      padding: 14px; /* Larger touch target */
+      padding: 14px;
       border: 2px solid #e2e8f0;
       border-radius: 10px;
-      font-size: 18px; /* Larger text for easier reading */
+      font-size: 18px;
       color: #334155;
       box-sizing: border-box;
       background-color: #f8fafc;
-      transition: border-color 0.2s;
-      -webkit-appearance: none; /* Removes default iOS styling */
+      transition: border-color 0.2s, box-shadow 0.2s;
+      -webkit-appearance: none;
     }
 
     select:focus, input:focus {
-      border-color: #4f46e5;
+      border-color: #FF5C00; /* JET Orange */
       outline: none;
       background-color: #fff;
+      box-shadow: 0 0 6px rgba(255, 92, 0, 0.3);
     }
 
     button {
       width: 100%;
       padding: 16px;
-      background-color: #4f46e5;
+      background-color: #FF5C00; /* JET Orange */
       color: white;
       border: none;
       border-radius: 10px;
       font-size: 18px;
       font-weight: 700;
       cursor: pointer;
-      box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.2);
-      -webkit-tap-highlight-color: transparent; /* Removes tap flash on mobile */
+      box-shadow: 0 4px 8px -1px rgba(255, 92, 0, 0.3);
+      -webkit-tap-highlight-color: transparent;
+      transition: background-color 0.2s, box-shadow 0.2s, transform 0.1s;
+    }
+
+    button:hover {
+      box-shadow: 0 6px 12px -1px rgba(255, 92, 0, 0.4);
     }
 
     button:active {
-      transform: scale(0.98); /* Little click animation */
+      transform: scale(0.98);
     }
 
-    /* Result box is always visible but content changes, prevents jumping */
     .result-box {
       margin-top: 25px;
       padding: 15px;
       background-color: #f1f5f9;
       border-radius: 12px;
       text-align: center;
-      border: 1px solid #e2e8f0;
+      border: 1px solid rgba(255, 92, 0, 0.2);
     }
 
     .result-text {
@@ -104,16 +114,16 @@
     }
 
     .result-amount {
-      font-size: 32px; /* Very distinct result */
+      font-size: 32px;
       font-weight: 800;
-      color: #0f172a;
+      color: #FF5C00; /* JET Orange */
       line-height: 1.2;
     }
 
     .disclaimer {
       margin-top: 8px;
       font-size: 12px;
-      color: #94a3b8; /* Muted grey instead of warning red */
+      color: #94a3b8;
       font-weight: 500;
     }
   </style>
