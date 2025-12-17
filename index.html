@@ -2,186 +2,185 @@
 <html lang="bg">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Калкулатор за доходи на куриери</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Калкулатор за Бонус поръчки</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background: #f5f5f5;
-      padding: 20px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      background-color: #f0f2f5; /* Light grey background to see the card better */
+      margin: 0;
+      /* Flexbox to center the card vertically and horizontally on the phone */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 15px;
+      box-sizing: border-box;
     }
-    .card {
-      max-width: 420px;
-      margin: auto;
-      background: white;
-      padding: 24px;
-      border-radius: 12px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+
+    .calculator-card {
+      background: #ffffff;
+      width: 100%;
+      max-width: 380px; /* Optimal width for mobile reading */
+      padding: 25px;
+      border-radius: 16px; /* Softer corners */
+      box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+      border: 1px solid #e0e0e0;
     }
-    h1 {
-      font-size: 22px;
-      margin-bottom: 16px;
+
+    h2 {
+      text-align: center;
+      color: #1e293b;
+      margin-top: 0;
+      margin-bottom: 20px;
+      font-size: 22px; /* Slightly larger header */
     }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
     label {
       display: block;
-      margin-top: 12px;
-      font-weight: bold;
+      margin-bottom: 8px;
+      font-weight: 600;
+      font-size: 14px;
+      color: #64748b;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
+
     select, input {
       width: 100%;
-      padding: 10px;
-      margin-top: 6px;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-      font-size: 16px;
+      padding: 14px; /* Larger touch target */
+      border: 2px solid #e2e8f0;
+      border-radius: 10px;
+      font-size: 18px; /* Larger text for easier reading */
+      color: #334155;
+      box-sizing: border-box;
+      background-color: #f8fafc;
+      transition: border-color 0.2s;
+      -webkit-appearance: none; /* Removes default iOS styling */
     }
+
+    select:focus, input:focus {
+      border-color: #4f46e5;
+      outline: none;
+      background-color: #fff;
+    }
+
     button {
       width: 100%;
-      margin-top: 20px;
-      padding: 12px;
-      font-size: 16px;
+      padding: 16px;
+      background-color: #4f46e5;
+      color: white;
       border: none;
       border-radius: 10px;
-      background: #4f46e5;
-      color: white;
-      cursor: pointer;
-    }
-    button:hover {
-      background: #4338ca;
-    }
-    .result {
-      margin-top: 20px;
       font-size: 18px;
-      font-weight: bold;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.2);
+      -webkit-tap-highlight-color: transparent; /* Removes tap flash on mobile */
+    }
+
+    button:active {
+      transform: scale(0.98); /* Little click animation */
+    }
+
+    /* Result box is always visible but content changes, prevents jumping */
+    .result-box {
+      margin-top: 25px;
+      padding: 15px;
+      background-color: #f1f5f9;
+      border-radius: 12px;
+      text-align: center;
+      border: 1px solid #e2e8f0;
+    }
+
+    .result-text {
+      font-size: 14px;
+      color: #64748b;
+      margin-bottom: 5px;
+    }
+
+    .result-amount {
+      font-size: 32px; /* Very distinct result */
+      font-weight: 800;
+      color: #0f172a;
+      line-height: 1.2;
+    }
+
+    .disclaimer {
+      margin-top: 8px;
+      font-size: 12px;
+      color: #94a3b8; /* Muted grey instead of warning red */
+      font-weight: 500;
     }
   </style>
 </head>
 <body>
-  <div class="card">
 
-    <label for="language">Език / Language</label>
-    <select id="language" onchange="setLanguage(this.value)">
-      <option value="bg" selected>Български</option>
-      <option value="en">English</option>
-      <option value="tr">Türkçe</option>
-    </select>
+  <div class="calculator-card">
+    <h2>Калкулатор за Бонус поръчки</h2>
 
-    <h1 id="title"></h1>
+    <div class="form-group">
+      <label for="contract">Договор (часове)</label>
+      <select id="contract">
+        <option value="40">40 часа</option>
+        <option value="30">30 часа</option>
+        <option value="20">20 часа</option>
+        <option value="10">10 часа</option>
+      </select>
+    </div>
 
-    <label id="contractLabel" for="contract"></label>
-    <select id="contract">
-      <option value="40">40</option>
-      <option value="30">30</option>
-      <option value="20">20</option>
-      <option value="10">10</option>
-    </select>
+    <div class="form-group">
+      <label for="orders">Брой поръчки</label>
+      <input type="number" id="orders" inputmode="numeric" placeholder="0" min="0">
+    </div>
 
-    <label id="ordersLabel" for="orders"></label>
-    <input type="number" id="orders" min="0" />
+    <button onclick="calculateBonus()">Изчисли</button>
 
-    <button id="calculateBtn" onclick="calculate()"></button>
-
-    <div class="result" id="result"></div>
+    <div class="result-box">
+      <div class="result-text">Натрупан бонус:</div>
+      <div class="result-amount" id="displayAmount">€0.00</div>
+      <div class="disclaimer">* Сумата е брутна (Gross)</div>
+    </div>
   </div>
 
   <script>
-    const translations = {
-      bg: {
-        title: 'Месечни доходи на куриер (само за куриери)',
-        contract: 'Тип договор (часове)',
-        orders: 'Общ брой поръчки',
-        calculate: 'Изчисли доходите',
-        error: 'Моля, въведете валиден брой поръчки.',
-        result: 'Общ доход: €'
-      },
-      en: {
-        title: 'Courier Monthly Earnings (Couriers only)',
-        contract: 'Contract type (hours)',
-        orders: 'Total orders',
-        calculate: 'Calculate earnings',
-        error: 'Please enter a valid number of orders.',
-        result: 'Total earnings: €'
-      },
-      tr: {
-        title: 'Kurye Aylık Kazancı (Sadece kuryeler için)',
-        contract: 'Sözleşme türü (saat)',
-        orders: 'Toplam sipariş',
-        calculate: 'Kazancı hesapla',
-        error: 'Lütfen geçerli bir sipariş sayısı girin.',
-        result: 'Toplam kazanç: €'
-      }
-    };
-
-    let currentLang = 'bg';
-
     const tiers = {
-      40: [
-        { limit: 100, rate: 0.25 },
-        { limit: 200, rate: 1.0 },
-        { limit: 300, rate: 1.5 },
-        { limit: Infinity, rate: 3.0 }
-      ],
-      30: [
-        { limit: 75, rate: 0.25 },
-        { limit: 150, rate: 1.0 },
-        { limit: 225, rate: 1.5 },
-        { limit: Infinity, rate: 3.0 }
-      ],
-      20: [
-        { limit: 50, rate: 0.25 },
-        { limit: 100, rate: 1.0 },
-        { limit: 150, rate: 1.5 },
-        { limit: Infinity, rate: 3.0 }
-      ],
-      10: [
-        { limit: 25, rate: 0.25 },
-        { limit: 50, rate: 1.0 },
-        { limit: 75, rate: 1.5 },
-        { limit: Infinity, rate: 3.0 }
-      ]
+      40: [ { limit: 100, rate: 0.25 }, { limit: 200, rate: 1.00 }, { limit: 300, rate: 1.50 }, { limit: Infinity, rate: 3.00 } ],
+      30: [ { limit: 75, rate: 0.25 }, { limit: 150, rate: 1.00 }, { limit: 225, rate: 1.50 }, { limit: Infinity, rate: 3.00 } ],
+      20: [ { limit: 50, rate: 0.25 }, { limit: 100, rate: 1.00 }, { limit: 150, rate: 1.50 }, { limit: Infinity, rate: 3.00 } ],
+      10: [ { limit: 25, rate: 0.25 }, { limit: 50, rate: 1.00 }, { limit: 75, rate: 1.50 }, { limit: Infinity, rate: 3.00 } ]
     };
 
-    function setLanguage(lang) {
-      currentLang = lang;
-      const t = translations[lang];
+    function calculateBonus() {
+      const contractType = document.getElementById('contract').value;
+      const ordersInput = document.getElementById('orders').value;
+      const displayDiv = document.getElementById('displayAmount');
+      
+      let orders = parseInt(ordersInput);
+      if (isNaN(orders) || orders < 0) orders = 0;
 
-      document.documentElement.lang = lang;
-      document.title = t.title;
-      document.getElementById('title').textContent = t.title;
-      document.getElementById('contractLabel').textContent = t.contract;
-      document.getElementById('ordersLabel').textContent = t.orders;
-      document.getElementById('calculateBtn').textContent = t.calculate;
-      document.getElementById('result').textContent = '';
-    }
-
-    function calculate() {
-      const orders = parseInt(document.getElementById('orders').value);
-      const contract = document.getElementById('contract').value;
-      const resultEl = document.getElementById('result');
-      const t = translations[currentLang];
-
-      if (isNaN(orders) || orders < 0) {
-        resultEl.textContent = t.error;
-        return;
-      }
-
-      const tierSet = tiers[contract];
+      const selectedTiers = tiers[contractType];
+      let totalBonus = 0;
       let previousLimit = 0;
-      let total = 0;
 
-      for (const tier of tierSet) {
+      for (let i = 0; i < selectedTiers.length; i++) {
+        const tier = selectedTiers[i];
         if (orders > previousLimit) {
-          const applicableOrders = Math.min(orders, tier.limit) - previousLimit;
-          total += applicableOrders * tier.rate;
+          let ordersInTier = Math.min(orders, tier.limit) - previousLimit;
+          totalBonus += ordersInTier * tier.rate;
           previousLimit = tier.limit;
+        } else {
+          break; 
         }
       }
 
-      resultEl.textContent = `${t.result}${total.toFixed(2)}`;
+      displayDiv.textContent = '€' + totalBonus.toFixed(2);
     }
-
-    // Init default language (Bulgarian)
-    setLanguage('bg');
   </script>
+
 </body>
 </html>
