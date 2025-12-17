@@ -23,19 +23,19 @@
       max-width: 380px;
       padding: 25px;
       border-radius: 16px;
-      box-shadow: 0 10px 25px rgba(255, 92, 0, 0.08); /* subtle orange shadow */
-      border: 2px solid rgba(255, 92, 0, 0.2); /* light orange border */
+      box-shadow: 0 10px 25px rgba(255, 128, 0, 0.08); /* orange shadow */
+      border: 2px solid rgba(255, 128, 0, 0.2); /* light orange border */
       transition: box-shadow 0.3s, border-color 0.3s;
     }
 
     .calculator-card:hover {
-      box-shadow: 0 15px 35px rgba(255, 92, 0, 0.15);
-      border-color: rgba(255, 92, 0, 0.3);
+      box-shadow: 0 15px 35px rgba(255, 128, 0, 0.15);
+      border-color: rgba(255, 128, 0, 0.3);
     }
 
     h2 {
       text-align: center;
-      color: #FF5C00; /* JET Orange */
+      color: #ff8000; /* primary orange */
       margin-top: 0;
       margin-bottom: 20px;
       font-size: 22px;
@@ -50,7 +50,7 @@
       margin-bottom: 8px;
       font-weight: 600;
       font-size: 14px;
-      color: #64748b;
+      color: #242e30; /* dark accent */
       text-transform: uppercase;
       letter-spacing: 0.5px;
     }
@@ -61,7 +61,7 @@
       border: 2px solid #e2e8f0;
       border-radius: 10px;
       font-size: 18px;
-      color: #334155;
+      color: #242e30; /* dark accent */
       box-sizing: border-box;
       background-color: #f8fafc;
       transition: border-color 0.2s, box-shadow 0.2s;
@@ -69,29 +69,29 @@
     }
 
     select:focus, input:focus {
-      border-color: #FF5C00; /* JET Orange */
+      border-color: #ff8000; /* primary orange */
       outline: none;
       background-color: #fff;
-      box-shadow: 0 0 6px rgba(255, 92, 0, 0.3);
+      box-shadow: 0 0 6px rgba(255, 128, 0, 0.3);
     }
 
     button {
       width: 100%;
       padding: 16px;
-      background-color: #FF5C00; /* JET Orange */
-      color: white;
+      background-color: #ff8000; /* primary orange */
+      color: #ffffff;
       border: none;
       border-radius: 10px;
       font-size: 18px;
       font-weight: 700;
       cursor: pointer;
-      box-shadow: 0 4px 8px -1px rgba(255, 92, 0, 0.3);
+      box-shadow: 0 4px 8px -1px rgba(255, 128, 0, 0.3);
       -webkit-tap-highlight-color: transparent;
       transition: background-color 0.2s, box-shadow 0.2s, transform 0.1s;
     }
 
     button:hover {
-      box-shadow: 0 6px 12px -1px rgba(255, 92, 0, 0.4);
+      box-shadow: 0 6px 12px -1px rgba(255, 128, 0, 0.4);
     }
 
     button:active {
@@ -104,19 +104,19 @@
       background-color: #f1f5f9;
       border-radius: 12px;
       text-align: center;
-      border: 1px solid rgba(255, 92, 0, 0.2);
+      border: 1px solid rgba(255, 128, 0, 0.2);
     }
 
     .result-text {
       font-size: 14px;
-      color: #64748b;
+      color: #242e30; /* dark accent */
       margin-bottom: 5px;
     }
 
     .result-amount {
       font-size: 32px;
       font-weight: 800;
-      color: #FF5C00; /* JET Orange */
+      color: #ff8000; /* primary orange */
       line-height: 1.2;
     }
 
