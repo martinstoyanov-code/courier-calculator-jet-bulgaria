@@ -15,28 +15,21 @@
       padding: 15px;
       box-sizing: border-box;
 
-      /* --- BACKGROUND PHOTO SETTINGS --- */
-      /* You can replace this URL with any image link you want */
-      background-image: url('https://images.unsplash.com/photo-1519501025264-65ba15a82390?q=80&w=2564&auto=format&fit=crop');
-      
-      /* This makes the image cover the whole screen */
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-      background-attachment: fixed; /* Keeps image still while scrolling */
+      /* --- BRANDED BACKGROUND --- */
+      /* Instead of an image URL, we use the official Orange color gradient */
+      background: linear-gradient(135deg, #ff8000 0%, #ff6200 100%);
+      background-attachment: fixed;
     }
 
     .calculator-card {
-      /* Made background slightly transparent to blend with photo */
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(5px); /* Blurs the background behind the card */
-      
+      background: #ffffff; /* Solid white to pop against the orange */
       width: 100%;
       max-width: 450px;
       padding: 25px;
       border-radius: 16px;
-      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2); /* Darker shadow for better contrast */
-      border: 1px solid rgba(255, 255, 255, 0.5);
+      /* Stronger shadow to separate card from the bright orange background */
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2); 
+      border: none;
       position: relative;
     }
 
@@ -273,16 +266,16 @@
     }
 
     .footer-links a {
-      color: #475569; /* Darker color for better visibility on transparent bg */
+      color: #334155; 
       text-decoration: none;
-      border-bottom: 1px dashed #475569;
+      border-bottom: 1px dashed #334155;
       transition: color 0.2s;
       cursor: pointer;
     }
 
     .footer-links a:hover {
-      color: #ff8000;
-      border-bottom-color: #ff8000;
+      color: #fff;
+      border-bottom-color: #fff;
     }
 
     /* Modal Background */
