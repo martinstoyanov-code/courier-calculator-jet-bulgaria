@@ -1,3 +1,15 @@
+Here is the updated code.
+
+What changed:
+
+Dropdown Menu: The options now show 8 hours, 6 hours, 4 hours, and 2 hours (instead of 40, 30, 20, 10).
+
+Data Structure: I updated the internal code logic (keys) to match 8, 6, 4, 2.
+
+Smart Translation: I added a small script so the word "hours" automatically translates (e.g., "8 часа" in Bulgarian, "8 hours" in English, "8 saat" in Turkish) when you switch languages.
+
+HTML
+
 <!DOCTYPE html>
 <html lang="bg">
 <head>
@@ -20,7 +32,7 @@
     .calculator-card {
       background: #ffffff;
       width: 100%;
-      max-width: 450px; /* Made slightly wider to fit table nicely */
+      max-width: 450px;
       padding: 25px;
       border-radius: 16px;
       box-shadow: 0 10px 25px rgba(255, 128, 0, 0.08);
@@ -279,10 +291,10 @@
     <div class="form-group">
       <label for="contract" id="lblContract">Тип договор (часове)</label>
       <select id="contract" onchange="handleContractChange()">
-        <option value="40">40</option>
-        <option value="30">30</option>
-        <option value="20">20</option>
-        <option value="10">10</option>
+        <option value="8">8 часа</option>
+        <option value="6">6 часа</option>
+        <option value="4">4 часа</option>
+        <option value="2">2 часа</option>
       </select>
     </div>
 
@@ -329,7 +341,7 @@
     const translations = {
       bg: {
         title: "Калкулатор за Бонус поръчки",
-        contract: "Тип договор (часове)",
+        contract: "Тип договор",
         orders: "Брой направени поръчки",
         button: "Изчисли",
         bonus: "Натрупан бонус:",
@@ -340,11 +352,12 @@
         th_level: "Ниво",
         th_range: "Диапазон",
         th_bonus: "Бонус",
+        hours_label: "часа",
         tiers: { base: "Базово", mid: "Средно", high: "Високо", super: "Супер Куриер" }
       },
       en: {
         title: "Bonus Order Calculator",
-        contract: "Contract Type (hours)",
+        contract: "Contract Type",
         orders: "Number of orders completed",
         button: "Calculate",
         bonus: "Accumulated Bonus:",
@@ -355,11 +368,12 @@
         th_level: "Level",
         th_range: "Range",
         th_bonus: "Bonus",
+        hours_label: "hours",
         tiers: { base: "Base", mid: "Mid", high: "High", super: "Super Courier" }
       },
       tr: {
         title: "Bonus Sipariş Hesaplayıcı",
-        contract: "Sözleşme Türü (saat)",
+        contract: "Sözleşme Türü",
         orders: "Tamamlanan sipariş sayısı",
         button: "Hesapla",
         bonus: "Kazanılan Bonus:",
@@ -370,11 +384,12 @@
         th_level: "Seviye",
         th_range: "Aralık",
         th_bonus: "Bonus",
+        hours_label: "saat",
         tiers: { base: "Baz", mid: "Orta", high: "Yüksek", super: "Süper" }
       },
       uk: {
         title: "Калькулятор Бонусів",
-        contract: "Тип договору (години)",
+        contract: "Тип договору",
         orders: "Кількість виконаних замовлень",
         button: "Розрахувати",
         bonus: "Накопичений бонус:",
@@ -385,11 +400,12 @@
         th_level: "Рівень",
         th_range: "Діапазон",
         th_bonus: "Бонус",
+        hours_label: "годин",
         tiers: { base: "База", mid: "Середній", high: "Високий", super: "Супер" }
       },
       ru: {
         title: "Калькулятор бонусов",
-        contract: "Тип договора (часы)",
+        contract: "Тип договора",
         orders: "Количество выполненных заказов",
         button: "Рассчитать",
         bonus: "Накопленный бонус:",
@@ -400,41 +416,42 @@
         th_level: "Уровень",
         th_range: "Диапазон",
         th_bonus: "Бонус",
+        hours_label: "часов",
         tiers: { base: "База", mid: "Средний", high: "Высокий", super: "Супер" }
       }
     };
 
     let currentLang = 'bg';
 
-    // --- DATA ---
+    // --- DATA (KEYS CHANGED TO 8, 6, 4, 2) ---
     const calculationTiers = {
-      40: [ { limit: 100, rate: 0.25 }, { limit: 200, rate: 1.00 }, { limit: 300, rate: 1.50 }, { limit: Infinity, rate: 3.00 } ],
-      30: [ { limit: 75, rate: 0.25 }, { limit: 150, rate: 1.00 }, { limit: 225, rate: 1.50 }, { limit: Infinity, rate: 3.00 } ],
-      20: [ { limit: 50, rate: 0.25 }, { limit: 100, rate: 1.00 }, { limit: 150, rate: 1.50 }, { limit: Infinity, rate: 3.00 } ],
-      10: [ { limit: 25, rate: 0.25 }, { limit: 50, rate: 1.00 }, { limit: 75, rate: 1.50 }, { limit: Infinity, rate: 3.00 } ]
+      8: [ { limit: 100, rate: 0.25 }, { limit: 200, rate: 1.00 }, { limit: 300, rate: 1.50 }, { limit: Infinity, rate: 3.00 } ],
+      6: [ { limit: 75, rate: 0.25 }, { limit: 150, rate: 1.00 }, { limit: 225, rate: 1.50 }, { limit: Infinity, rate: 3.00 } ],
+      4: [ { limit: 50, rate: 0.25 }, { limit: 100, rate: 1.00 }, { limit: 150, rate: 1.50 }, { limit: Infinity, rate: 3.00 } ],
+      2: [ { limit: 25, rate: 0.25 }, { limit: 50, rate: 1.00 }, { limit: 75, rate: 1.50 }, { limit: Infinity, rate: 3.00 } ]
     };
 
-    // Table display data (matches logic above)
+    // Table display data
     const tableData = {
-      40: [
+      8: [
         { id: "base", range: "0 - 100", price: "€0.25" },
         { id: "mid", range: "100 - 200", price: "€1.00" },
         { id: "high", range: "200 - 300", price: "€1.50" },
         { id: "super", range: "300 +", price: "€3.00" }
       ],
-      30: [
+      6: [
         { id: "base", range: "0 - 75", price: "€0.25" },
         { id: "mid", range: "75 - 150", price: "€1.00" },
         { id: "high", range: "150 - 225", price: "€1.50" },
         { id: "super", range: "225 +", price: "€3.00" }
       ],
-      20: [
+      4: [
         { id: "base", range: "0 - 50", price: "€0.25" },
         { id: "mid", range: "50 - 100", price: "€1.00" },
         { id: "high", range: "100 - 150", price: "€1.50" },
         { id: "super", range: "150 +", price: "€3.00" }
       ],
-      10: [
+      2: [
         { id: "base", range: "0 - 25", price: "€0.25" },
         { id: "mid", range: "25 - 50", price: "€1.00" },
         { id: "high", range: "50 - 75", price: "€1.50" },
@@ -456,6 +473,12 @@
       document.getElementById('lblDisclaimer').textContent = t.disclaimer;
       document.getElementById('successMode').innerHTML = t.status_success;
       
+      // Update Contract Dropdown Text (Keeps the numbers 8,6,4,2 but changes word 'hours')
+      const contractSelect = document.getElementById('contract');
+      Array.from(contractSelect.options).forEach(opt => {
+          opt.text = opt.value + ' ' + t.hours_label;
+      });
+
       // Update Table Headers
       document.getElementById('lblScheme').textContent = t.scheme_title;
       document.getElementById('thLevel').textContent = t.th_level;
