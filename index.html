@@ -20,7 +20,7 @@
     .calculator-card {
       background: #ffffff;
       width: 100%;
-      max-width: 380px;
+      max-width: 450px; /* Made slightly wider to fit table nicely */
       padding: 25px;
       border-radius: 16px;
       box-shadow: 0 10px 25px rgba(255, 128, 0, 0.08);
@@ -50,20 +50,21 @@
       background-color: #f8fafc;
       cursor: pointer;
       outline: none;
-      width: auto; /* Overrides global select width */
+      width: auto;
     }
 
     .lang-select:focus {
       border-color: #ff8000;
     }
 
-    h2 {
+    h2, h3 {
       text-align: center;
       color: #ff8000;
       margin-top: 0;
-      margin-bottom: 20px;
-      font-size: 22px;
     }
+    
+    h2 { margin-bottom: 20px; font-size: 22px; }
+    h3 { margin-top: 30px; margin-bottom: 15px; font-size: 18px; opacity: 0.9; }
 
     .form-group {
       margin-bottom: 20px;
@@ -204,6 +205,59 @@
       color: #94a3b8;
       font-weight: 500;
     }
+
+    /* --- NEW TABLE STYLES --- */
+    table {
+      width: 100%;
+      border-collapse: separate; 
+      border-spacing: 0;
+      margin-top: 10px;
+      font-size: 14px;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    th {
+      background-color: #ff8000; /* Matching Orange */
+      color: white;
+      padding: 12px;
+      text-align: center;
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    td {
+      padding: 12px 10px;
+      border-bottom: 1px solid #e2e8f0;
+      color: #334155;
+      text-align: center;
+    }
+
+    td:first-child {
+      text-align: left;
+      padding-left: 15px;
+      font-weight: 600;
+      color: #242e30;
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    tr:nth-child(even) {
+      background-color: #fff8f2; /* Very light orange tint */
+    }
+
+    .price-col {
+      font-weight: 800;
+      color: #ff8000;
+    }
+
+    .range-col {
+      color: #64748b;
+    }
   </style>
 </head>
 <body>
@@ -224,7 +278,7 @@
 
     <div class="form-group">
       <label for="contract" id="lblContract">Тип договор (часове)</label>
-      <select id="contract" onchange="resetCalculator()">
+      <select id="contract" onchange="handleContractChange()">
         <option value="40">40</option>
         <option value="30">30</option>
         <option value="20">20</option>
@@ -244,20 +298,30 @@
       <div class="result-amount" id="displayAmount">€0.00</div>
       
       <div class="status-container" id="statusContainer" style="display:none;">
-        
         <div id="progressMode">
           <div class="status-message" id="statusMessage"></div>
           <div class="progress-bar-bg">
             <div class="progress-bar-fill" id="progressBar"></div>
           </div>
         </div>
-
         <div id="successMode" class="success-badge"></div>
-
       </div>
-
       <div class="disclaimer" id="lblDisclaimer">* Сумата е брутна (Gross)</div>
     </div>
+
+    <h3 id="lblScheme">Схема на Бонусите</h3>
+    <table>
+      <thead>
+        <tr>
+          <th id="thLevel">Ниво</th>
+          <th id="thRange">Брой</th>
+          <th id="thBonus">Бонус</th>
+        </tr>
+      </thead>
+      <tbody id="tableBody">
+        </tbody>
+    </table>
+
   </div>
 
   <script>
@@ -271,7 +335,12 @@
         bonus: "Натрупан бонус:",
         disclaimer: "* Сумата е брутна (Gross)",
         status_running: "Още <span class='highlight-number'>{n}</span> поръчки до <br>Супер Ниво (€3.00/пор.)",
-        status_success: "🎉 Поздравления! <br>Вие сте Супер Куриер!"
+        status_success: "🎉 Поздравления! <br>Вие сте Супер Куриер!",
+        scheme_title: "Схема на Бонусите",
+        th_level: "Ниво",
+        th_range: "Диапазон",
+        th_bonus: "Бонус",
+        tiers: { base: "База", mid: "Средно", high: "Високо", super: "Супер" }
       },
       en: {
         title: "Bonus Order Calculator",
@@ -281,7 +350,12 @@
         bonus: "Accumulated Bonus:",
         disclaimer: "* Amount is Gross",
         status_running: "<span class='highlight-number'>{n}</span> more orders to reach <br>Super Tier (€3.00/order)",
-        status_success: "🎉 Congratulations! <br>You are a Super Courier!"
+        status_success: "🎉 Congratulations! <br>You are a Super Courier!",
+        scheme_title: "Bonus Scheme",
+        th_level: "Level",
+        th_range: "Range",
+        th_bonus: "Bonus",
+        tiers: { base: "Base", mid: "Mid", high: "High", super: "Super" }
       },
       tr: {
         title: "Bonus Sipariş Hesaplayıcı",
@@ -291,7 +365,12 @@
         bonus: "Kazanılan Bonus:",
         disclaimer: "* Tutar brüttür (Gross)",
         status_running: "Süper Seviye'ye (€3.00/sip) <br>son <span class='highlight-number'>{n}</span> sipariş",
-        status_success: "🎉 Tebrikler! <br>Süper Kuryesin!"
+        status_success: "🎉 Tebrikler! <br>Süper Kuryesin!",
+        scheme_title: "Bonus Şeması",
+        th_level: "Seviye",
+        th_range: "Aralık",
+        th_bonus: "Bonus",
+        tiers: { base: "Baz", mid: "Orta", high: "Yüksek", super: "Süper" }
       },
       uk: {
         title: "Калькулятор Бонусів",
@@ -301,7 +380,12 @@
         bonus: "Накопичений бонус:",
         disclaimer: "* Сума брутто (Gross)",
         status_running: "Ще <span class='highlight-number'>{n}</span> замовлень до <br>Супер Рівня (€3.00/зам.)",
-        status_success: "🎉 Вітаємо! <br>Ви Супер Кур'єр!"
+        status_success: "🎉 Вітаємо! <br>Ви Супер Кур'єр!",
+        scheme_title: "Схема Бонусів",
+        th_level: "Рівень",
+        th_range: "Діапазон",
+        th_bonus: "Бонус",
+        tiers: { base: "База", mid: "Середній", high: "Високий", super: "Супер" }
       },
       ru: {
         title: "Калькулятор бонусов",
@@ -311,11 +395,52 @@
         bonus: "Накопленный бонус:",
         disclaimer: "* Сумма брутто (Gross)",
         status_running: "Еще <span class='highlight-number'>{n}</span> заказов до <br>Супер Уровня (€3.00/зак.)",
-        status_success: "🎉 Поздравляем! <br>Вы Супер Курьер!"
+        status_success: "🎉 Поздравляем! <br>Вы Супер Курьер!",
+        scheme_title: "Схема Бонусов",
+        th_level: "Уровень",
+        th_range: "Диапазон",
+        th_bonus: "Бонус",
+        tiers: { base: "База", mid: "Средний", high: "Высокий", super: "Супер" }
       }
     };
 
     let currentLang = 'bg';
+
+    // --- DATA ---
+    const calculationTiers = {
+      40: [ { limit: 100, rate: 0.25 }, { limit: 200, rate: 1.00 }, { limit: 300, rate: 1.50 }, { limit: Infinity, rate: 3.00 } ],
+      30: [ { limit: 75, rate: 0.25 }, { limit: 150, rate: 1.00 }, { limit: 225, rate: 1.50 }, { limit: Infinity, rate: 3.00 } ],
+      20: [ { limit: 50, rate: 0.25 }, { limit: 100, rate: 1.00 }, { limit: 150, rate: 1.50 }, { limit: Infinity, rate: 3.00 } ],
+      10: [ { limit: 25, rate: 0.25 }, { limit: 50, rate: 1.00 }, { limit: 75, rate: 1.50 }, { limit: Infinity, rate: 3.00 } ]
+    };
+
+    // Table display data (matches logic above)
+    const tableData = {
+      40: [
+        { id: "base", range: "0 - 100", price: "€0.25" },
+        { id: "mid", range: "100 - 200", price: "€1.00" },
+        { id: "high", range: "200 - 300", price: "€1.50" },
+        { id: "super", range: "300 +", price: "€3.00" }
+      ],
+      30: [
+        { id: "base", range: "0 - 75", price: "€0.25" },
+        { id: "mid", range: "75 - 150", price: "€1.00" },
+        { id: "high", range: "150 - 225", price: "€1.50" },
+        { id: "super", range: "225 +", price: "€3.00" }
+      ],
+      20: [
+        { id: "base", range: "0 - 50", price: "€0.25" },
+        { id: "mid", range: "50 - 100", price: "€1.00" },
+        { id: "high", range: "100 - 150", price: "€1.50" },
+        { id: "super", range: "150 +", price: "€3.00" }
+      ],
+      10: [
+        { id: "base", range: "0 - 25", price: "€0.25" },
+        { id: "mid", range: "25 - 50", price: "€1.00" },
+        { id: "high", range: "50 - 75", price: "€1.50" },
+        { id: "super", range: "75 +", price: "€3.00" }
+      ]
+    };
 
     function changeLanguage() {
       const langSelect = document.getElementById('langSelect');
@@ -330,24 +455,48 @@
       document.getElementById('lblBonus').textContent = t.bonus;
       document.getElementById('lblDisclaimer').textContent = t.disclaimer;
       document.getElementById('successMode').innerHTML = t.status_success;
+      
+      // Update Table Headers
+      document.getElementById('lblScheme').textContent = t.scheme_title;
+      document.getElementById('thLevel').textContent = t.th_level;
+      document.getElementById('thRange').textContent = t.th_range;
+      document.getElementById('thBonus').textContent = t.th_bonus;
 
-      // Re-calculate to update dynamic text if numbers are present
+      // Update Table Rows
+      updateTableDisplay();
+
+      // Re-calculate if needed
       const ordersVal = document.getElementById('orders').value;
       if (ordersVal && ordersVal > 0) {
         calculateBonus();
       }
     }
 
-    const tiers = {
-      40: [ { limit: 100, rate: 0.25 }, { limit: 200, rate: 1.00 }, { limit: 300, rate: 1.50 }, { limit: Infinity, rate: 3.00 } ],
-      30: [ { limit: 75, rate: 0.25 }, { limit: 150, rate: 1.00 }, { limit: 225, rate: 1.50 }, { limit: Infinity, rate: 3.00 } ],
-      20: [ { limit: 50, rate: 0.25 }, { limit: 100, rate: 1.00 }, { limit: 150, rate: 1.50 }, { limit: Infinity, rate: 3.00 } ],
-      10: [ { limit: 25, rate: 0.25 }, { limit: 50, rate: 1.00 }, { limit: 75, rate: 1.50 }, { limit: Infinity, rate: 3.00 } ]
-    };
-
-    function resetCalculator() {
+    // Called when contract changes
+    function handleContractChange() {
         document.getElementById('statusContainer').style.display = 'none';
         document.getElementById('displayAmount').textContent = '€0.00';
+        updateTableDisplay();
+    }
+
+    // Draws the table rows
+    function updateTableDisplay() {
+        const contract = document.getElementById('contract').value;
+        const tbody = document.getElementById('tableBody');
+        const rows = tableData[contract];
+        const t = translations[currentLang].tiers;
+
+        tbody.innerHTML = '';
+
+        rows.forEach(row => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+              <td>${t[row.id]}</td>
+              <td class="range-col">${row.range}</td>
+              <td class="price-col">${row.price}</td>
+            `;
+            tbody.appendChild(tr);
+        });
     }
 
     function calculateBonus() {
@@ -364,7 +513,7 @@
       let orders = parseInt(ordersInput);
       if (isNaN(orders) || orders < 0) orders = 0;
 
-      const selectedTiers = tiers[contractType];
+      const selectedTiers = calculationTiers[contractType];
       let totalBonus = 0;
       let previousLimit = 0;
 
@@ -397,7 +546,6 @@
 
         const remaining = superTierThreshold - orders + 1;
         
-        // Inject number into translated string
         let message = translations[currentLang].status_running;
         message = message.replace('{n}', remaining);
         
@@ -408,6 +556,9 @@
         progressBar.style.width = percentage + '%';
       }
     }
+
+    // Initialize Table on Load
+    updateTableDisplay();
   </script>
 
 </body>
