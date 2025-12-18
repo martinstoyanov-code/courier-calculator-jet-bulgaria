@@ -206,7 +206,7 @@
       font-weight: 500;
     }
 
-    /* --- NEW TABLE STYLES --- */
+    /* Table Styles */
     table {
       width: 100%;
       border-collapse: separate; 
@@ -219,7 +219,7 @@
     }
 
     th {
-      background-color: #ff8000; /* Matching Orange */
+      background-color: #ff8000;
       color: white;
       padding: 12px;
       text-align: center;
@@ -247,7 +247,7 @@
     }
 
     tr:nth-child(even) {
-      background-color: #fff8f2; /* Very light orange tint */
+      background-color: #fff8f2;
     }
 
     .price-col {
@@ -258,9 +258,221 @@
     .range-col {
       color: #64748b;
     }
+
+    /* --- FOOTER & MODAL STYLES --- */
+    .footer-links {
+      margin-top: 25px;
+      text-align: center;
+      font-size: 13px;
+    }
+
+    .footer-links a {
+      color: #94a3b8;
+      text-decoration: none;
+      border-bottom: 1px dashed #94a3b8;
+      transition: color 0.2s;
+      cursor: pointer;
+    }
+
+    .footer-links a:hover {
+      color: #ff8000;
+      border-bottom-color: #ff8000;
+    }
+
+    /* Modal Background */
+    .modal-overlay {
+      display: none; 
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0,0,0,0.5);
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(2px);
+    }
+
+    .modal-content {
+      background-color: #fefefe;
+      margin: 15px;
+      padding: 25px;
+      border: 1px solid #888;
+      width: 100%;
+      max-width: 450px;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+      position: relative;
+      animation: slideDown 0.3s ease;
+      max-height: 85vh;
+      overflow-y: auto;
+    }
+
+    @keyframes slideDown {
+      from { transform: translateY(-20px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    .close-btn {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+      line-height: 20px;
+    }
+
+    .close-btn:hover {
+      color: #ff8000;
+    }
+
+    .modal-body {
+      color: #334155;
+      line-height: 1.6;
+      font-size: 13px;
+      text-align: left;
+    }
+
+    .modal-body h4 {
+      color: #242e30;
+      margin-top: 20px;
+      margin-bottom: 10px;
+      border-bottom: 2px solid #ff8000;
+      padding-bottom: 5px;
+      display: inline-block;
+    }
+
+    .modal-body strong {
+      color: #0f172a;
+      display: block;
+      margin-top: 15px;
+      margin-bottom: 5px;
+      font-size: 14px;
+    }
+
+    .modal-body ul {
+      margin: 5px 0 10px 0;
+      padding-left: 20px;
+    }
+
+    .modal-body li {
+      margin-bottom: 4px;
+    }
+
+    .terms-header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    
+    .terms-header h3 { color: #ff8000; margin: 0; font-size: 18px; }
+    .terms-header h4 { margin: 5px 0; font-size: 16px; color: #242e30; border: none; }
+    .terms-header p { color: #94a3b8; font-style: italic; font-size: 12px; margin: 0; }
   </style>
 </head>
 <body>
+
+  <div id="termsModal" class="modal-overlay">
+    <div class="modal-content">
+      <span class="close-btn" onclick="closeTerms()">&times;</span>
+      
+      <div class="modal-body">
+        <div class="terms-header">
+          <h3>ОБЩИ УСЛОВИЯ</h3>
+          <h4>НА БОНУС СХЕМА ЗА КУРИЕРИ</h4>
+          <p>(Terms & Conditions of the Courier Bonus Scheme)</p>
+        </div>
+
+        <strong>1. Цел (Purpose)</strong>
+        Ние вярваме, че усилията и отдадеността трябва да бъдат възнаградени. Тази бонусна схема има за цел да стимулира и възнагради куриерите за постигане на висок обем поръчки и отлично представяне. Програмата насърчава служителите да предоставят надеждна и качествена услуга, споделяйки ценностите на JET.
+
+        <strong>2. Обхват (Scope)</strong>
+        Тази политика важи за всички служители на длъжност "Куриер", наети от HH Delivery BG EOOD, които работят под бранда Scoober (логистичното звено на Just Eat Takeaway.com).
+
+        <strong>3. Право на участие (Eligibility)</strong>
+        Всички активни куриери на трудов договор имат право да участват в бонусната схема, при условие че:
+        <ul>
+          <li>Имат активен договор към момента на изчисляване на бонуса.</li>
+        </ul>
+
+        <strong>4. Структура на Бонуса (Bonus Structure)</strong>
+        Бонусът се изчислява на базата на вида договор (работни часове) и броя доставени поръчки за съответния месец. Заплащането е на поръчка (pay per order) и се определя според достигнатото ниво (Tier).
+        <br><br>
+        <em>Схема на изплащане според типа договор:</em>
+
+        <strong>А. Договор 8 часа</strong>
+        <ul>
+          <li>Base (0-100 поръчки): €0.25 на поръчка</li>
+          <li>Mid (100-200 поръчки): €1.00 на поръчка</li>
+          <li>High (200-300 поръчки): €1.50 на поръчка</li>
+          <li>Super (300+ поръчки): €3.00 на поръчка</li>
+        </ul>
+
+        <strong>Б. Договор 6 часа</strong>
+        <ul>
+          <li>Base (0-75 поръчки): €0.25 на поръчка</li>
+          <li>Mid (75-150 поръчки): €1.00 на поръчка</li>
+          <li>High (150-225 поръчки): €1.50 на поръчка</li>
+          <li>Super (225+ поръчки): €3.00 на поръчка</li>
+        </ul>
+
+        <strong>В. Договор 4 часа</strong>
+        <ul>
+          <li>Base (0-50 поръчки): €0.25 на поръчка</li>
+          <li>Mid (50-100 поръчки): €1.00 на поръчка</li>
+          <li>High (100-150 поръчки): €1.50 на поръчка</li>
+          <li>Super (150+ поръчки): €3.00 на поръчка</li>
+        </ul>
+
+        <strong>Г. Договор 2 часа</strong>
+        <ul>
+          <li>Base (0-25 поръчки): €0.25 на поръчка</li>
+          <li>Mid (25-50 поръчки): €1.00 на поръчка</li>
+          <li>High (50-75 поръчки): €1.50 на поръчка</li>
+          <li>Super (75+ поръчки): €3.00 на поръчка</li>
+        </ul>
+
+        <strong>5. Метод на изчисляване (Calculation Method)</strong>
+        Бонусите се натрупват прогресивно. Това означава, че поръчките, попадащи в по-ниското ниво, се заплащат на цената за това ниво, а само поръчките, надхвърлящи лимита, се заплащат на по-високата цена.
+        <ul>
+          <li>Всички посочени суми са БРУТНИ (Gross).</li>
+          <li>Сумата се изчислява в евро (€).</li>
+        </ul>
+
+        <strong>6. Условия за допустимост на поръчките (Conditions)</strong>
+        Бонус се изплаща само за поръчки, които са:
+        <ul>
+          <li>Успешно доставени до клиента.</li>
+          <li>Маркирани като "Завършени" в системата на Scoober.</li>
+        </ul>
+        Важно: Поръчки, които са анулирани, отказани или не са доставени по вина на куриера, не се включват в бройката за бонуса.
+
+        <strong>7. Време и метод на плащане (Payment Timing)</strong>
+        <ul>
+          <li>Плащането се извършва заедно с месечната заплата по банков път.</li>
+          <li>Сумата подлежи на всички приложими данъци и осигуровки съгласно българското законодателство.</li>
+        </ul>
+
+        <strong>8. Право на промяна или отмяна (Right to Modify)</strong>
+        Scoober си запазва правото да:
+        <ul>
+          <li>Променя, спира или прекратява бонусната схема по всяко време.</li>
+          <li>Променя праговете на нивата (Tiers) или сумите за възнаграждение по свое усмотрение, като уведоми служителите предварително.</li>
+        </ul>
+        С участието си в програмата, служителите приемат тези условия и се отказват от претенции при бъдещи промени на схемата.
+
+        <strong>9. Злоупотреби и Конфиденциалност</strong>
+        <ul>
+          <li>Всякакъв опит за манипулиране на системата или изкуствено завишаване на броя поръчки ще доведе до дисквалификация от бонусната схема и може да доведе до дисциплинарни действия.</li>
+          <li>Данните за представянето на куриерите се обработват при строга конфиденциалност и в съответствие с приложимите закони за защита на личните данни (GDPR).</li>
+        </ul>
+        
+        <br>
+        <button onclick="closeTerms()" style="background:#e2e8f0; color:#333; margin-top:10px;">Затвори</button>
+      </div>
+    </div>
+  </div>
 
   <div class="calculator-card">
     
@@ -322,6 +534,10 @@
         </tbody>
     </table>
 
+    <div class="footer-links">
+      <a onclick="openTerms()" id="lnkTerms">Условия за ползване</a>
+    </div>
+
   </div>
 
   <script>
@@ -341,7 +557,8 @@
         th_range: "Диапазон",
         th_bonus: "Бонус",
         hours_label: "часа",
-        tiers: { base: "Базово", mid: "Средно", high: "Високо", super: "Супер Куриер" }
+        tiers: { base: "Базово", mid: "Средно", high: "Високо", super: "Супер Куриер" },
+        terms_link: "Условия за ползване"
       },
       en: {
         title: "Bonus Order Calculator",
@@ -357,7 +574,8 @@
         th_range: "Range",
         th_bonus: "Bonus",
         hours_label: "hours",
-        tiers: { base: "Base", mid: "Mid", high: "High", super: "Super Courier" }
+        tiers: { base: "Base", mid: "Mid", high: "High", super: "Super Courier" },
+        terms_link: "Terms & Conditions"
       },
       tr: {
         title: "Bonus Sipariş Hesaplayıcı",
@@ -373,7 +591,8 @@
         th_range: "Aralık",
         th_bonus: "Bonus",
         hours_label: "saat",
-        tiers: { base: "Baz", mid: "Orta", high: "Yüksek", super: "Süper" }
+        tiers: { base: "Baz", mid: "Orta", high: "Yüksek", super: "Süper" },
+        terms_link: "Şartlar ve Koşullar"
       },
       uk: {
         title: "Калькулятор Бонусів",
@@ -389,7 +608,8 @@
         th_range: "Діапазон",
         th_bonus: "Бонус",
         hours_label: "годин",
-        tiers: { base: "База", mid: "Середній", high: "Високий", super: "Супер" }
+        tiers: { base: "База", mid: "Середній", high: "Високий", super: "Супер" },
+        terms_link: "Правила та умови"
       },
       ru: {
         title: "Калькулятор бонусов",
@@ -405,13 +625,14 @@
         th_range: "Диапазон",
         th_bonus: "Бонус",
         hours_label: "часов",
-        tiers: { base: "База", mid: "Средний", high: "Высокий", super: "Супер" }
+        tiers: { base: "База", mid: "Средний", high: "Высокий", super: "Супер" },
+        terms_link: "Условия использования"
       }
     };
 
     let currentLang = 'bg';
 
-    // --- DATA (KEYS CHANGED TO 8, 6, 4, 2) ---
+    // --- DATA ---
     const calculationTiers = {
       8: [ { limit: 100, rate: 0.25 }, { limit: 200, rate: 1.00 }, { limit: 300, rate: 1.50 }, { limit: Infinity, rate: 3.00 } ],
       6: [ { limit: 75, rate: 0.25 }, { limit: 150, rate: 1.00 }, { limit: 225, rate: 1.50 }, { limit: Infinity, rate: 3.00 } ],
@@ -419,7 +640,6 @@
       2: [ { limit: 25, rate: 0.25 }, { limit: 50, rate: 1.00 }, { limit: 75, rate: 1.50 }, { limit: Infinity, rate: 3.00 } ]
     };
 
-    // Table display data
     const tableData = {
       8: [
         { id: "base", range: "0 - 100", price: "€0.25" },
@@ -452,7 +672,6 @@
       currentLang = langSelect.value;
       const t = translations[currentLang];
 
-      // Update static text
       document.getElementById('lblTitle').textContent = t.title;
       document.getElementById('lblContract').textContent = t.contract;
       document.getElementById('lblOrders').textContent = t.orders;
@@ -461,36 +680,32 @@
       document.getElementById('lblDisclaimer').textContent = t.disclaimer;
       document.getElementById('successMode').innerHTML = t.status_success;
       
-      // Update Contract Dropdown Text (Keeps the numbers 8,6,4,2 but changes word 'hours')
       const contractSelect = document.getElementById('contract');
       Array.from(contractSelect.options).forEach(opt => {
           opt.text = opt.value + ' ' + t.hours_label;
       });
 
-      // Update Table Headers
       document.getElementById('lblScheme').textContent = t.scheme_title;
       document.getElementById('thLevel').textContent = t.th_level;
       document.getElementById('thRange').textContent = t.th_range;
       document.getElementById('thBonus').textContent = t.th_bonus;
+      
+      document.getElementById('lnkTerms').textContent = t.terms_link;
 
-      // Update Table Rows
       updateTableDisplay();
 
-      // Re-calculate if needed
       const ordersVal = document.getElementById('orders').value;
       if (ordersVal && ordersVal > 0) {
         calculateBonus();
       }
     }
 
-    // Called when contract changes
     function handleContractChange() {
         document.getElementById('statusContainer').style.display = 'none';
         document.getElementById('displayAmount').textContent = '€0.00';
         updateTableDisplay();
     }
 
-    // Draws the table rows
     function updateTableDisplay() {
         const contract = document.getElementById('contract').value;
         const tbody = document.getElementById('tableBody');
@@ -541,11 +756,9 @@
 
       displayDiv.textContent = '€' + totalBonus.toFixed(2);
 
-      // Status Logic
       const superTierThreshold = selectedTiers[selectedTiers.length - 2].limit;
       statusContainer.style.display = 'block';
 
-      // Get current translation for success message
       successMode.innerHTML = translations[currentLang].status_success;
 
       if (orders > superTierThreshold) {
@@ -568,7 +781,21 @@
       }
     }
 
-    // Initialize Table on Load
+    function openTerms() {
+      document.getElementById('termsModal').style.display = "flex";
+    }
+
+    function closeTerms() {
+      document.getElementById('termsModal').style.display = "none";
+    }
+
+    window.onclick = function(event) {
+      const modal = document.getElementById('termsModal');
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
+    }
+
     updateTableDisplay();
   </script>
 
