@@ -1,9 +1,23 @@
+Here is the updated code.
+
+What is new:
+
+Language Selector: A stylish dropdown menu at the top of the card to switch between Bulgarian, English, Turkish, Ukrainian, and Russian.
+
+Instant Translation: All text labels, buttons, and even the dynamic logic (the "Super Tier" status messages) update instantly when you change the language or calculate.
+
+Data Structure: I created a dictionary system in the JavaScript so you can easily edit the text for any language without breaking the logic.
+
+You can copy-paste this entire block:
+
+HTML
+
 <!DOCTYPE html>
 <html lang="bg">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Калкулатор за Бонус поръчки</title>
+  <title>Bonus Calculator</title>
   <style>
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
@@ -26,11 +40,35 @@
       box-shadow: 0 10px 25px rgba(255, 128, 0, 0.08);
       border: 2px solid rgba(255, 128, 0, 0.2);
       transition: box-shadow 0.3s, border-color 0.3s;
+      position: relative;
     }
 
     .calculator-card:hover {
       box-shadow: 0 15px 35px rgba(255, 128, 0, 0.15);
       border-color: rgba(255, 128, 0, 0.3);
+    }
+
+    /* Language Selector Styles */
+    .lang-container {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 10px;
+    }
+
+    .lang-select {
+      padding: 8px 12px;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      font-size: 13px;
+      color: #242e30;
+      background-color: #f8fafc;
+      cursor: pointer;
+      outline: none;
+      width: auto; /* Overrides global select width */
+    }
+
+    .lang-select:focus {
+      border-color: #ff8000;
     }
 
     h2 {
@@ -122,7 +160,7 @@
       margin-bottom: 15px;
     }
 
-    /* New Styles for Status Section */
+    /* Status Section */
     .status-container {
       border-top: 1px dashed #cbd5e1;
       padding-top: 15px;
@@ -159,14 +197,13 @@
       font-size: 17px;
     }
 
-    /* Success Badge Style */
     .success-badge {
       background-color: #ff8000;
       color: white;
       padding: 12px;
       border-radius: 8px;
       font-weight: 700;
-      display: none; /* Hidden by default */
+      display: none;
       animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
 
@@ -186,51 +223,135 @@
 <body>
 
   <div class="calculator-card">
-    <h2>Калкулатор за Бонус поръчки</h2>
+    
+    <div class="lang-container">
+      <select id="langSelect" class="lang-select" onchange="changeLanguage()">
+        <option value="bg" selected>🇧🇬 Български</option>
+        <option value="en">🇬🇧 English</option>
+        <option value="tr">🇹🇷 Türkçe</option>
+        <option value="uk">🇺🇦 Українська</option>
+        <option value="ru">🇷🇺 Русский</option>
+      </select>
+    </div>
+
+    <h2 id="lblTitle">Калкулатор за Бонус поръчки</h2>
 
     <div class="form-group">
-      <label for="contract">Тип договор (часове)</label>
+      <label for="contract" id="lblContract">Тип договор (часове)</label>
       <select id="contract" onchange="resetCalculator()">
-        <option value="40">40 часа</option>
-        <option value="30">30 часа</option>
-        <option value="20">20 часа</option>
-        <option value="10">10 часа</option>
+        <option value="40">40</option>
+        <option value="30">30</option>
+        <option value="20">20</option>
+        <option value="10">10</option>
       </select>
     </div>
 
     <div class="form-group">
-      <label for="orders">Брой направени поръчки</label>
+      <label for="orders" id="lblOrders">Брой направени поръчки</label>
       <input type="number" id="orders" inputmode="numeric" placeholder="0" min="0">
     </div>
 
-    <button onclick="calculateBonus()">Изчисли</button>
+    <button onclick="calculateBonus()" id="btnCalc">Изчисли</button>
 
     <div class="result-box">
-      <div class="result-text">Натрупан бонус:</div>
+      <div class="result-text" id="lblBonus">Натрупан бонус:</div>
       <div class="result-amount" id="displayAmount">€0.00</div>
       
       <div class="status-container" id="statusContainer" style="display:none;">
         
         <div id="progressMode">
-          <div class="status-message">
-            Още <span class="highlight-number" id="remainingOrders">0</span> поръчки до <br>Супер Ниво (€3.00/пор.)
-          </div>
+          <div class="status-message" id="statusMessage"></div>
           <div class="progress-bar-bg">
             <div class="progress-bar-fill" id="progressBar"></div>
           </div>
         </div>
 
-        <div id="successMode" class="success-badge">
-          🎉 Поздравления! <br>Вие сте Супер Куриер!
-        </div>
+        <div id="successMode" class="success-badge"></div>
 
       </div>
 
-      <div class="disclaimer">* Сумата е брутна (Gross)</div>
+      <div class="disclaimer" id="lblDisclaimer">* Сумата е брутна (Gross)</div>
     </div>
   </div>
 
   <script>
+    // --- TRANSLATIONS ---
+    const translations = {
+      bg: {
+        title: "Калкулатор за Бонус поръчки",
+        contract: "Тип договор (часове)",
+        orders: "Брой направени поръчки",
+        button: "Изчисли",
+        bonus: "Натрупан бонус:",
+        disclaimer: "* Сумата е брутна (Gross)",
+        status_running: "Още <span class='highlight-number'>{n}</span> поръчки до <br>Супер Ниво (€3.00/пор.)",
+        status_success: "🎉 Поздравления! <br>Вие сте Супер Куриер!"
+      },
+      en: {
+        title: "Bonus Order Calculator",
+        contract: "Contract Type (hours)",
+        orders: "Number of orders completed",
+        button: "Calculate",
+        bonus: "Accumulated Bonus:",
+        disclaimer: "* Amount is Gross",
+        status_running: "<span class='highlight-number'>{n}</span> more orders to reach <br>Super Tier (€3.00/order)",
+        status_success: "🎉 Congratulations! <br>You are a Super Courier!"
+      },
+      tr: {
+        title: "Bonus Sipariş Hesaplayıcı",
+        contract: "Sözleşme Türü (saat)",
+        orders: "Tamamlanan sipariş sayısı",
+        button: "Hesapla",
+        bonus: "Kazanılan Bonus:",
+        disclaimer: "* Tutar brüttür (Gross)",
+        status_running: "Süper Seviye'ye (€3.00/sip) <br>son <span class='highlight-number'>{n}</span> sipariş",
+        status_success: "🎉 Tebrikler! <br>Süper Kuryesin!"
+      },
+      uk: {
+        title: "Калькулятор Бонусів",
+        contract: "Тип договору (години)",
+        orders: "Кількість виконаних замовлень",
+        button: "Розрахувати",
+        bonus: "Накопичений бонус:",
+        disclaimer: "* Сума брутто (Gross)",
+        status_running: "Ще <span class='highlight-number'>{n}</span> замовлень до <br>Супер Рівня (€3.00/зам.)",
+        status_success: "🎉 Вітаємо! <br>Ви Супер Кур'єр!"
+      },
+      ru: {
+        title: "Калькулятор бонусов",
+        contract: "Тип договора (часы)",
+        orders: "Количество выполненных заказов",
+        button: "Рассчитать",
+        bonus: "Накопленный бонус:",
+        disclaimer: "* Сумма брутто (Gross)",
+        status_running: "Еще <span class='highlight-number'>{n}</span> заказов до <br>Супер Уровня (€3.00/зак.)",
+        status_success: "🎉 Поздравляем! <br>Вы Супер Курьер!"
+      }
+    };
+
+    let currentLang = 'bg';
+
+    function changeLanguage() {
+      const langSelect = document.getElementById('langSelect');
+      currentLang = langSelect.value;
+      const t = translations[currentLang];
+
+      // Update static text
+      document.getElementById('lblTitle').textContent = t.title;
+      document.getElementById('lblContract').textContent = t.contract;
+      document.getElementById('lblOrders').textContent = t.orders;
+      document.getElementById('btnCalc').textContent = t.button;
+      document.getElementById('lblBonus').textContent = t.bonus;
+      document.getElementById('lblDisclaimer').textContent = t.disclaimer;
+      document.getElementById('successMode').innerHTML = t.status_success;
+
+      // Re-calculate to update dynamic text if numbers are present
+      const ordersVal = document.getElementById('orders').value;
+      if (ordersVal && ordersVal > 0) {
+        calculateBonus();
+      }
+    }
+
     const tiers = {
       40: [ { limit: 100, rate: 0.25 }, { limit: 200, rate: 1.00 }, { limit: 300, rate: 1.50 }, { limit: Infinity, rate: 3.00 } ],
       30: [ { limit: 75, rate: 0.25 }, { limit: 150, rate: 1.00 }, { limit: 225, rate: 1.50 }, { limit: Infinity, rate: 3.00 } ],
@@ -239,7 +360,6 @@
     };
 
     function resetCalculator() {
-        // Optional: clear results when contract changes
         document.getElementById('statusContainer').style.display = 'none';
         document.getElementById('displayAmount').textContent = '€0.00';
     }
@@ -249,11 +369,10 @@
       const ordersInput = document.getElementById('orders').value;
       const displayDiv = document.getElementById('displayAmount');
       
-      // Visual Elements
       const statusContainer = document.getElementById('statusContainer');
       const progressMode = document.getElementById('progressMode');
       const successMode = document.getElementById('successMode');
-      const remainingSpan = document.getElementById('remainingOrders');
+      const statusMessageDiv = document.getElementById('statusMessage');
       const progressBar = document.getElementById('progressBar');
 
       let orders = parseInt(ordersInput);
@@ -263,7 +382,6 @@
       let totalBonus = 0;
       let previousLimit = 0;
 
-      // Calculate Bonus
       for (let i = 0; i < selectedTiers.length; i++) {
         const tier = selectedTiers[i];
         if (orders > previousLimit) {
@@ -275,34 +393,32 @@
         }
       }
 
-      // Display Amount
       displayDiv.textContent = '€' + totalBonus.toFixed(2);
 
-      // --- NEW LOGIC: Calculate Super Tier Status ---
-      
-      // The threshold for the super tier is the limit of the second-to-last item
-      // (because the last item is Infinity)
+      // Status Logic
       const superTierThreshold = selectedTiers[selectedTiers.length - 2].limit;
-
       statusContainer.style.display = 'block';
 
+      // Get current translation for success message
+      successMode.innerHTML = translations[currentLang].status_success;
+
       if (orders > superTierThreshold) {
-        // USER IS IN SUPER TIER
         progressMode.style.display = 'none';
         successMode.style.display = 'block';
       } else {
-        // USER IS BELOW SUPER TIER
         successMode.style.display = 'none';
         progressMode.style.display = 'block';
 
-        const remaining = superTierThreshold - orders + 1; // +1 because you need to exceed the limit
-        remainingSpan.textContent = remaining;
-
-        // Calculate progress percentage relative to the super tier goal
-        let percentage = (orders / (superTierThreshold + 1)) * 100;
-        // Clamp percentage between 5% (visibility) and 100%
-        if(orders > 0 && percentage < 5) percentage = 5;
+        const remaining = superTierThreshold - orders + 1;
         
+        // Inject number into translated string
+        let message = translations[currentLang].status_running;
+        message = message.replace('{n}', remaining);
+        
+        statusMessageDiv.innerHTML = message;
+
+        let percentage = (orders / (superTierThreshold + 1)) * 100;
+        if(orders > 0 && percentage < 5) percentage = 5;
         progressBar.style.width = percentage + '%';
       }
     }
