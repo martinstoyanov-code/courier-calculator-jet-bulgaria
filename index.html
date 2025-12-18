@@ -34,6 +34,14 @@
       border-color: rgba(255, 128, 0, 0.3);
     }
 
+    /* --- NEW LOGO STYLE --- */
+    .brand-logo {
+      display: block;
+      max-width: 180px; /* Adjusts width */
+      height: auto; /* Maintains aspect ratio */
+      margin: 0 auto 15px auto; /* Centers horizontally + margin bottom */
+    }
+
     /* Language Selector Styles */
     .lang-container {
       display: flex;
@@ -401,7 +409,7 @@
         <br><br>
         <em>Схема на изплащане според типа договор:</em>
 
-        <strong>А. Договор 8 часа</strong>
+        <strong>А. Договор 40 часа</strong>
         <ul>
           <li>Base (0-100 поръчки): €0.25 на поръчка</li>
           <li>Mid (100-200 поръчки): €1.00 на поръчка</li>
@@ -409,7 +417,7 @@
           <li>Super (300+ поръчки): €3.00 на поръчка</li>
         </ul>
 
-        <strong>Б. Договор 6 часа</strong>
+        <strong>Б. Договор 30 часа</strong>
         <ul>
           <li>Base (0-75 поръчки): €0.25 на поръчка</li>
           <li>Mid (75-150 поръчки): €1.00 на поръчка</li>
@@ -417,7 +425,7 @@
           <li>Super (225+ поръчки): €3.00 на поръчка</li>
         </ul>
 
-        <strong>В. Договор 4 часа</strong>
+        <strong>В. Договор 20 часа</strong>
         <ul>
           <li>Base (0-50 поръчки): €0.25 на поръчка</li>
           <li>Mid (50-100 поръчки): €1.00 на поръчка</li>
@@ -425,7 +433,7 @@
           <li>Super (150+ поръчки): €3.00 на поръчка</li>
         </ul>
 
-        <strong>Г. Договор 2 часа</strong>
+        <strong>Г. Договор 10 часа</strong>
         <ul>
           <li>Base (0-25 поръчки): €0.25 на поръчка</li>
           <li>Mid (25-50 поръчки): €1.00 на поръчка</li>
@@ -476,6 +484,8 @@
 
   <div class="calculator-card">
     
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/Just_Eat_Takeaway.com_logo.svg/320px-Just_Eat_Takeaway.com_logo.svg.png" alt="Just Eat Takeaway" class="brand-logo">
+
     <div class="lang-container">
       <select id="langSelect" class="lang-select" onchange="changeLanguage()">
         <option value="bg" selected>🇧🇬 Български</option>
